@@ -18,6 +18,7 @@ pids/
 # Environment variables
 .env
 .env.*.local
+package-lock.json
 
 # System files
 .DS_Store
