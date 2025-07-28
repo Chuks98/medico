@@ -90,8 +90,9 @@ function createUploader(subfolder) {
 }
 
 module.exports = {
-  uploadDoctor:   createUploader('doctors'),
-  uploadBlog:     createUploader('blog'),
-  uploadCarousel: createUploader('carousel'),
-  uploadGallery:  createUploader('gallery'),
+  uploadDepartment:   createUploader('departments'),
+  uploadDoctor:       createUploader('doctors'),
+  uploadBlog:         createUploader('blog'),
+  uploadCarousel:     createUploader('carousel'),
+  uploadGallery:      createUploader('gallery'),
 };

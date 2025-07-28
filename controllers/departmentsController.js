@@ -3,6 +3,7 @@ const DepartmentsModel = require('../models/departmentsModel');
 // Create Department
 const createDepartment = async (req, res) => {
   const { name, description } = req.body;
+  const image = req.file?.filename;
 
   try {
     const departmentCount = await DepartmentsModel.countDocuments();
@@ -18,6 +19,7 @@ const createDepartment = async (req, res) => {
     const department = new DepartmentsModel({
       name: name.trim(),
       description: description?.trim() || '',
+      imageUrl: image ? `/departments/${image}` : null,
       doctors: []
     });
 
@@ -32,6 +34,7 @@ const createDepartment = async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' });
   }
 };
+
 
 
 // Read All Departments
@@ -57,6 +60,8 @@ const getDepartmentById = async (req, res) => {
   }
 };
 
+
+
 // Update Department Name
 const updateSingleDepartment = async (req, res) => {
   try {
@@ -68,11 +73,16 @@ const updateSingleDepartment = async (req, res) => {
       return res.status(400).json({ message: 'Department already exists.' });
     }
 
-    const department = await DepartmentsModel.findByIdAndUpdate(id, { 
+    const updateFields = {
       name: name.trim(),
-      description: description?.trim() || ''},
-      { new: true }
-    );
+      description: description?.trim() || '',
+    };
+
+    if (req.file) {
+      updateFields.imageUrl = `/departments/${req.file.filename}`;
+    }
+
+    const department = await DepartmentsModel.findByIdAndUpdate(id, updateFields, { new: true });
 
     if (!department) {
       return res.status(404).json({ message: 'Department not found' });

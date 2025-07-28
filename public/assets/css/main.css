@@ -255,6 +255,7 @@ h6 {
   color: var(--heading-color);
 }
 
+.services .cta-btn,
 .header .cta-btn,
 .header .cta-btn:focus {
   color: var(--contrast-color);
@@ -848,7 +849,7 @@ section,
 }
 
 .hero .container {
-  background: color-mix(in srgb, var(--surface-color), transparent 10%);
+  background: color-mix(in srgb, var(--surface-color), transparent 40%);
   position: relative;
   text-align: center;
   padding-top: 30px;
@@ -1234,6 +1235,12 @@ section,
   padding: 20px;
   transition: all ease-in-out 0.3s;
   height: 100%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.services .service-item:hover {
+  transform: translateY(-5px);
 }
 
 .services .service-item .icon {
@@ -1285,6 +1292,16 @@ section,
 
 .services .service-item:hover h3 {
   color: var(--accent-color);
+}
+
+/* Services Popup modal  */
+.modal-content {
+  border-radius: 10px;
+}
+
+.modal-header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 /*--------------------------------------------------------------
@@ -2215,4 +2232,26 @@ section,
 
 .social-links a:hover {
   color: #3fbbc0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Services page CSS codes */
+@media (max-width: 576px) {
+  #serviceModal .modal-body {
+    padding: 1.5rem;
+    font-size: 1rem;
+  }
+  #serviceModal .modal-title {
+    font-size: 1.25rem;
+  }
 }

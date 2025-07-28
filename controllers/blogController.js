@@ -19,16 +19,32 @@ exports.createBlog = async (req, res) => {
   }
 };
 
-// List all blogs
+
+
+
+
+// GET all blogs (with pagination)
 exports.getAllBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ createdAt: -1 });
-    res.json(blogs);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    const total = await Blog.countDocuments();
+    const blogs = await Blog.find().sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+    res.status(200).json({
+      data: blogs,
+      totalItems: total,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit)
+    });
   } catch (err) {
-    console.error('❌ listBlogs error:', err);
+    console.error('❌ getAllBlogs error:', err);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 

@@ -175,20 +175,24 @@ const getAllAppointments = async (req, res) => {
 // ✅ Get only pending appointments
 const getAppointmentsByStatus = async (req, res) => {
   const { status } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
 
   try {
-    const appointments = await Booking.find({ status }).sort({ dateBooked: -1 });
+    const totalCount = await Booking.countDocuments({ status })
+    const appointments = await Booking.find({ status })
+      .sort({ dateBooked: -1 })
+      .skip(skip)
+      .limit(limit);
 
-    if (!appointments || appointments.length === 0) {
-      return res.status(200).json({
-        message: `No ${status} appointments found.`,
-        data: [],
-      });
-    }
 
     res.status(200).json({
       message: `${appointments.length} ${status} appointment(s) retrieved successfully.`,
       data: appointments,
+      currentPage: page,
+      totalPages: Math.ceil(totalCount / limit),
+      totalItems: totalCount,
     });
   } catch (error) {
     console.error(`❌ Error fetching ${status} appointments:`, error.message);
@@ -198,6 +202,7 @@ const getAppointmentsByStatus = async (req, res) => {
     });
   }
 };
+
 
 
 module.exports = { createBooking, rescheduleAppointment, acceptAppointment, markAsAttendedOrCanceled, getAllAppointments, getAppointmentsByStatus };

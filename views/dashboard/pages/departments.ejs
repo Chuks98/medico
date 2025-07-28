@@ -6,8 +6,19 @@
         <div class="d-flex align-items-center justify-content-between">
           <h4 class="card-title mb-0">Create Department</h4>
         </div>
-        <form id="departmentForm" class="mt-4">
-
+        <form id="departmentForm" class="mt-4" enctype="multipart/form-data">
+          <!-- Department Image Upload -->
+          <div class="mb-3">
+            <label for="deptImage" class="form-label">Department Image</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="ti ti-camera"></i></span>
+              <input type="file" class="form-control text-black" id="deptImage" name="departmentImage" accept="image/*" required />
+            </div>
+            <div class="mt-2">
+              <img id="previewDeptPic" class="rounded d-none" style="width: 200px; max-height:200px; object-fit: fit;">
+            </div>
+          </div>
+          
           <div class="mb-3">
             <label for="deptName" class="form-label">Department Name</label>
             <div class="input-group">
@@ -17,10 +28,12 @@
               <input type="text" class="form-control text-black" id="deptName" name="name" placeholder="e.g. Radiology" required>
             </div>
           </div>
+
           <div class="mb-3">
             <label for="deptDesc" class="form-label">Description</label>
-            <textarea class="form-control text-black" id="deptDesc" name="description" rows="5"></textarea>
+            <textarea class="form-control text-black" id="deptDesc" name="description" rows="5" required></textarea>
           </div>
+
           <button type="submit" class="btn btn-primary w-100">Create Department</button>
         </form>
       </div>
@@ -34,20 +47,8 @@
         <div class="d-flex align-items-center justify-content-between">
           <h4 class="card-title mb-0">Departments</h4>
         </div>
-        <div class="table-responsive mt-4">
-          <table class="table table-hover align-middle text-nowrap fs-3" id="departmentTable">
-            <thead>
-              <tr>
-                <th>S/N</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th class="text-end">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Dynamic rows go here -->
-            </tbody>
-          </table>
+        <div class="dept-data mt-4">
+          <!-- The departments will apear here -->
         </div>
       </div>
     </div>
@@ -70,6 +71,21 @@
         <form id="editDeptForm">
           <input type="hidden" id="editDeptId">
 
+          <!-- Current Department Image -->
+          <div class="mb-3">
+            <label class="form-label d-block">Current Department Image</label>
+            <img id="currentDeptPic" src="" class="rounded" style="width: 200px; max-height:200px; object-fit: cover;">
+          </div>
+
+          <!-- Change Department Image -->
+          <div class="mb-3">
+            <label for="editDeptPic" class="form-label">Change Department Image</label>
+            <input type="file" class="form-control" id="editDeptPic" name="departmentImage" accept="image/*" required>
+            <div class="mt-2">
+              <img id="previewEditDeptPic" class="rounded d-none" style="width: 200px; max-height:200px; object-fit: fit;">
+            </div>
+          </div>
+
           <div class="mb-3">
             <label for="editDeptName" class="form-label">Department Name</label>
             <div class="input-group">
@@ -80,7 +96,7 @@
 
           <div class="mb-3">
             <label for="editDeptDesc" class="form-label">Description</label>
-            <textarea class="form-control text-black" id="editDeptDesc" name="description" rows="4" placeholder="Enter department description"></textarea>
+            <textarea class="form-control text-black" id="editDeptDesc" name="description" rows="4" placeholder="Enter department description" required></textarea>
           </div>
 
             <button type="submit" class="btn btn-success">Update Department</button>

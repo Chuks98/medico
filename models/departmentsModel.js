@@ -27,6 +27,9 @@ const departmentSchema = new mongoose.Schema({
     description:  {
         type: String, 
     },
+    imageUrl: {
+        type: String,
+    },
     doctors: [doctorSchema],
 });
 

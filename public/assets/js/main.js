@@ -432,6 +432,9 @@ $(() => {
 
 
 
+
+
+
   
   // Book an appointment form submission
   $('#appointmentForm').submit(function (e) {
@@ -478,6 +481,72 @@ $(() => {
         Swal.fire('Error', message, 'error');
       }
     });
+  });
+
+
+
+
+
+
+
+
+  // Dynamically display departments from the backend JavaScript codes
+  $.ajax({
+    url: '/departments/getAllDepartments',
+    method: 'GET',
+    success: function (departments) {
+      // First handle the navbar department dropdown
+      const dropdownList = $('#departmentsDropdownList');
+      dropdownList.empty(); // clear any existing <li> items
+      departments.forEach((dept, index) => {
+        dropdownList.append(`
+          <li><a href="/#departments">${dept.name}</a></li>
+        `);
+      });
+
+      const tabList = $('.nav-tabs');
+      const tabContent = $('.tab-content');
+
+      tabList.empty();
+      tabContent.empty();
+
+      if (!departments.length) {
+        tabList.append('<li class="nav-item"><span class="nav-link disabled">No departments available</span></li>');
+        return;
+      }
+
+      departments.forEach(function (dept, index) {
+        const tabId = `tabs-tab-${index + 1}`;
+        const isActive = index === 0 ? 'active show' : '';
+        const image = dept.imageUrl || '/dashboard-assets/images/products/s1.jpg'; // fallback
+
+        // Tabs on the left
+        tabList.append(`
+          <li class="nav-item">
+            <a class="nav-link ${isActive}" data-bs-toggle="tab" href="#${tabId}">${dept.name}</a>
+          </li>
+        `);
+
+        // Content on the right
+        tabContent.append(`
+          <div class="tab-pane ${isActive}" id="${tabId}">
+            <div class="row">
+              <div class="col-lg-8 details order-2 order-lg-1">
+                <h3>${dept.name}</h3>
+                <p class="fst-italic"> Details - </p>
+                <p>${dept.description || 'No description provided.'}</p>
+              </div>
+              <div class="col-lg-4 text-center order-1 order-lg-2">
+                <img src="${image}" alt="${dept.name}" class="img-fluid rounded shadow-sm" style="max-height: 280px; min-height: 280px; object-fit: fit;">
+              </div>
+            </div>
+          </div>
+        `);
+      });
+    },
+    error: function (xhr, status, error) {
+      console.error('Error loading departments:', error);
+    }
   });
 
 
@@ -743,6 +812,16 @@ $(() => {
         return;
       }
 
+      // ✅ Show loading spinner before AJAX request
+      Swal.fire({
+        title: 'Adding Comment...',
+        text: 'Please wait...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading(); // shows spinner
+        }
+      });
+
       $.ajax({
         url: `/blog/${blogId}/addComment`,
         method: 'POST',
@@ -798,6 +877,16 @@ $(() => {
     $form.find('.loading').show();
     $form.find('.error-message, .sent-message').hide();
 
+    // ✅ Show loading spinner before AJAX request
+    Swal.fire({
+      title: 'Sending Email...',
+      text: 'Please wait...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(); // shows spinner
+      }
+    });
+
     $.ajax({
       url: '/contact/sendEmailAndSave',
       method: 'POST',
@@ -825,21 +914,104 @@ $(() => {
 
 
 
-  // Floating Whatsapp icon JavaScript codes
-  const phoneNumber = "2347043592391"; // ✅ WhatsApp expects international format (Nigeria = +234)
-  
+   const phoneNumber = "2347043592391";
+
   $("#whatsapp-btn").on("click", function () {
-    let message = encodeURIComponent("Hello, I’d like to make an inquiry.");
-    
-    // ✅ Detect if it's a mobile device
-    let isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(navigator.userAgent);
+    const message = encodeURIComponent("Hello, I’d like to make an inquiry.");
+    const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(navigator.userAgent);
 
-    let whatsappUrl = isMobile 
-      ? `https://wa.me/${phoneNumber}?text=${message}`  // Opens WhatsApp mobile app
-      : `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${message}`; // Opens WhatsApp Web
+    if (isMobile) {
+      // Mobile opens directly via wa.me
+      window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+    } else {
+      const desktopUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
+      const webUrl = `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
 
-    window.open(whatsappUrl, "_blank");
+      // Create a hidden iframe to trigger desktop WhatsApp
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = desktopUrl;
+      document.body.appendChild(iframe);
+
+      // Set fallback in case nothing happens (likely app not installed or user cancels)
+      const fallback = setTimeout(() => {
+        window.open(webUrl, "_blank");
+        document.body.removeChild(iframe);
+      }, 3000); // 2 seconds is safe to avoid double trigger if app opens
+
+      // Optionally: cancel fallback if window loses focus (user accepted the desktop prompt)
+      const handleFocus = () => {
+        clearTimeout(fallback);
+        window.removeEventListener("focus", handleFocus);
+        document.body.removeChild(iframe);
+      };
+
+      window.addEventListener("focus", handleFocus);
+    }
   });
 
+
+
+
+
+
+
+
+
+
+
+
+
+  // Services JavaScript codes. Attach click listener to service links
+  const isServicesPage = window.location.pathname === "/services";
+  const displayCount = isServicesPage ? services.length : 6;
+
+  const container = $("#services .row");
+  container.empty(); // Clear the static items
+
+  services.slice(0, displayCount).forEach((service, index) => {
+    const delay = 100 * (index + 1);
+    const card = `
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${delay}">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="${service.icon}"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>${service.title}</h3>
+          </a>
+          <p>${service.short}</p>
+        </div>
+      </div>
+    `;
+    container.append(card);
+  });
+
+  // Optional: Show "See all services" button on homepage
+  if (!isServicesPage) {
+    container.append(`
+      <div class="col-12 text-center mt-5">
+        <a href="/services" class="cta-btn">See More Services</a>
+      </div>
+    `);
+  }
+
+
+
+  $(document).on("click", ".service-item", function (e) {
+    e.preventDefault();
+
+    const clickedTitle = $(this).find("h3").text().trim(); // Corrected to h3
+    const service = services.find(s => s.title === clickedTitle);
+
+    if (service) {
+      $("#modalTitle").text(service.title);
+      $("#modalContent").text(service.long);
+      $("#modalIcon").attr("class", service.icon + " me-2");
+
+      const modal = new bootstrap.Modal(document.getElementById("serviceModal"));
+      modal.show();
+    }
+  });
 
 });

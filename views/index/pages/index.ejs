@@ -236,6 +236,8 @@
 
 
 
+
+
     <!-- Services Section -->
 <section id="services" class="services section">
 
@@ -251,7 +253,7 @@
 
       <!-- Service Item 1 -->
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="service-item position-relative">
+        <div class="service-items position-relative">
           <div class="icon">
             <i class="fas fa-heartbeat"></i>
           </div>
@@ -264,7 +266,7 @@
 
       <!-- Service Item 2 -->
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="service-item position-relative">
+        <div class="service-items position-relative">
           <div class="icon">
             <i class="fas fa-pills"></i>
           </div>
@@ -277,7 +279,7 @@
 
       <!-- Service Item 3 -->
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="service-item position-relative">
+        <div class="service-items position-relative">
           <div class="icon">
             <i class="fas fa-hospital-user"></i>
           </div>
@@ -290,7 +292,7 @@
 
       <!-- Service Item 4 -->
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-        <div class="service-item position-relative">
+        <div class="service-items position-relative">
           <div class="icon">
             <i class="fas fa-dna"></i>
           </div>
@@ -303,7 +305,7 @@
 
       <!-- Service Item 5 -->
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-        <div class="service-item position-relative">
+        <div class="service-items position-relative">
           <div class="icon">
             <i class="fas fa-wheelchair"></i>
           </div>
@@ -316,7 +318,7 @@
 
       <!-- Service Item 6 -->
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
-        <div class="service-item position-relative">
+        <div class="service-items position-relative">
           <div class="icon">
             <i class="fas fa-notes-medical"></i>
           </div>
@@ -418,106 +420,29 @@
 </script> -->
 
     <!-- Tabs Section -->
-    <section id="tabs" class="tabs section">
-
-     <!-- Section Title -->
+    <section id="departments" class="tabs section">
       <div class="container section-title" data-aos="fade-up">
         <h2>Departments</h2>
-        <p>Explore our range of expert-led medical departments — each equipped with advanced technology, compassionate professionals, and a commitment to your health and recovery.</p>
-      </div><!-- End Section Title -->
-
+        <p>
+          Explore our range of expert-led medical departments — each equipped with advanced technology, compassionate professionals, and a commitment to your health and recovery.
+        </p>
+      </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-
         <div class="row">
+          <!-- Tabs navigation -->
           <div class="col-lg-3">
-            <ul class="nav nav-tabs flex-column">
-              <li class="nav-item">
-                <a class="nav-link active show" data-bs-toggle="tab" href="#tabs-tab-1">Cardiology</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tabs-tab-2">Neurology</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tabs-tab-3">Hepatology</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tabs-tab-4">Pediatrics</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tabs-tab-5">Ophthalmologists</a>
-              </li>
-            </ul>
+            <ul class="nav nav-tabs flex-column" id="departmentTabs"></ul>
           </div>
+          <!-- Tabs content -->
           <div class="col-lg-9 mt-4 mt-lg-0">
-            <div class="tab-content">
-              <div class="tab-pane active show" id="tabs-tab-1">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Cardiology</h3>
-                    <p class="fst-italic">Comprehensive heart care delivered by specialists using the latest diagnostic and treatment technology.</p>
-                    <p>Our Cardiology Department is dedicated to the prevention, diagnosis, and treatment of heart-related conditions such as hypertension, coronary artery disease, heart failure, and arrhythmias. With advanced cardiac imaging, interventional procedures, and a compassionate care team, we ensure each patient receives personalized attention for better heart health and long-term recovery.</p>
-                  </div>
-
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/departments-1.jpg" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-tab-2">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                  <h3>Neurology</h3>
-                  <p class="fst-italic">Expert care for brain, spine, and nervous system disorders — focused on restoring function and improving quality of life.</p>
-                  <p>Our Neurology Department specializes in diagnosing and treating a wide range of neurological conditions, including stroke, epilepsy, migraines, multiple sclerosis, Parkinson’s disease, and more. With a multidisciplinary team and cutting-edge technology, we provide accurate assessments, personalized treatment plans, and ongoing support for patients and their families.</p>
-                </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/departments-2.jpg" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-tab-3">
-                <div class="row">
-                 <div class="col-lg-8 details order-2 order-lg-1">
-                  <h3>Hepatology</h3>
-                  <p class="fst-italic">Specialized liver care backed by advanced diagnostics and compassionate treatment approaches.</p>
-                  <p>Our Hepatology Department focuses on the prevention, diagnosis, and treatment of liver, gallbladder, biliary tree, and pancreatic disorders. From hepatitis and fatty liver disease to cirrhosis and liver cancer, our team delivers expert care using modern imaging, lab analysis, and personalized medical therapies — all within a patient-centered environment.</p>
-                </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/departments-3.jpg" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-tab-4">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Pediatrics</h3>
-                    <p class="fst-italic">Comprehensive care for infants, children, and adolescents in a safe and nurturing environment.</p>
-                    <p>Our Pediatrics Department is dedicated to the health and development of young patients — from newborns to teenagers. We provide preventive care, immunizations, growth monitoring, and treatment for a wide range of childhood illnesses. Our compassionate team works closely with families to ensure every child receives personalized, age-appropriate care that supports both physical and emotional well-being.</p>
-                  </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/departments-4.jpg" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-tab-5">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Ophthalmologists</h3>
-                    <p class="fst-italic">Expert care for your vision — from routine eye exams to advanced surgical procedures.</p>
-                    <p>Our Ophthalmology Department offers comprehensive eye care services including diagnostics, treatment of eye diseases, and corrective surgeries. Whether you're managing glaucoma, cataracts, retinal conditions, or simply need a vision checkup, our specialists use cutting-edge technology to preserve and enhance your sight. We’re committed to helping you see life more clearly — safely and effectively.</p>
-                  </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/departments-5.jpg" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="tab-content" id="departmentTabContent"></div>
           </div>
         </div>
       </div>
 
-    </section><!-- /Tabs Section -->
+    </section>
+
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section">
@@ -855,9 +780,7 @@
             </div>
             <div class="col-md-12 text-center">
               <div class="loading">Loading</div>
-              <div class="error-message"></div>
-              <div class="sent-message">Your message has been sent. Thank you!</div>
-              <button type="submit">Send Message</button>
+                <button type="submit">Send Message</button>
             </div>
           </div>
         </form><!-- End Contact Form -->
@@ -867,4 +790,30 @@
   </div>
 
 </section><!-- /Contact Section -->
+
+
+
+
+<!-- Service Detail Modal -->
+<div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-sm-down">
+    <div class="modal-content shadow-lg">
+
+      <div class="modal-header" style="background-color: #3fbbc0;">
+        <h5 class="modal-title d-flex align-items-center text-white" id="modalTitle" style="color: #ffffff;">
+          <i id="modalIcon" class="me-2 text-white"></i>
+          <span>Service Title</span>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body" id="modalContent">
+        <!-- Long service description injected here -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 

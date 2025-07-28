@@ -1,11 +1,11 @@
 const express = require('express');
-const { uploadDoctor } = require('../utils/multerConfig');
+const { uploadDepartment, uploadDoctor } = require('../utils/multerConfig');
 const { createDepartment, getAllDepartments, getDepartmentById, updateSingleDepartment, deleteSingleDepartment, addDoctor, getAllDoctors, updateDoctor, deleteDoctor, getDoctorsInDepartment, getSingleDoctor} = require('../controllers/departmentsController');
 
 const router = express.Router();
 
 // Create department
-router.post('/createDepartment', createDepartment);
+router.post('/createDepartment', uploadDepartment.single('departmentImage'), createDepartment);
 
 // Get all departments
 router.get('/getAllDepartments', getAllDepartments);
@@ -14,7 +14,7 @@ router.get('/getAllDepartments', getAllDepartments);
 router.get('/getSingleDepartment/:id', getDepartmentById);
 
 // Update department
-router.put('/updateSingleDepartment/:id', updateSingleDepartment);
+router.put('/updateSingleDepartment/:id', uploadDepartment.single('departmentImage'), updateSingleDepartment);
 
 // Delete department
 router.delete('/deleteSingleDepartment/:id', deleteSingleDepartment);
