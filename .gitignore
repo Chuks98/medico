@@ -41,20 +41,3 @@ pids/
 *.pid
 ecosystem.config.js
 
-# Optional: If using uploads
-uploads/
-
-# Optional: Public cache
-public/cache/
-
-# Optional: Database or local data
-data/
-*.sqlite
-*.db
-
-# Optional: Temp files
-tmp/
-temp/
-
-# Optional: If using EJS partials
-views/partials/*~
