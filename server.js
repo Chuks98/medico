@@ -11,6 +11,7 @@ const contactRoutes = require('./routes/contactRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const departmentsRoutes = require('./routes/departmentsRoutes');
 const blogRoutes = require('./routes/blogRoutes');
+const servicesRoutes = require('./routes/servicesRoutes');
 const indexRoutes = require('./routes/frontendRoutes/indexRoutes.js');
 const dashboardRoutes = require('./routes/frontendRoutes/dashboardRoutes.js');
 const path = require('path');
@@ -65,6 +66,7 @@ app.use('/contact', contactRoutes);
 app.use('/images', imageRoutes);
 app.use('/departments', departmentsRoutes);
 app.use('/blog', blogRoutes);
+app.use('/services', servicesRoutes);
 
 // Initialize and start server
 app.listen(port, async () => {

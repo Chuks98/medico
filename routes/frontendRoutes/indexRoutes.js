@@ -43,9 +43,16 @@ router.get('/logout', (req, res) => {
 
 
 // 📄 Dynamic index pages — catch-all
+
+
 router.get('/:page', (req, res) => {
-  const page = req.params.page;
-  res.render('index/main-layout', { page: `pages/${page}` });
+  try{
+    const page = req.params.page;
+    res.render('index/main-layout', { page: `pages/${page}` });
+  } catch(err){ 
+    console.error('Error rendering page:', err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 

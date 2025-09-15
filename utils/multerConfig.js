@@ -95,4 +95,5 @@ module.exports = {
   uploadBlog:         createUploader('blog'),
   uploadCarousel:     createUploader('carousel'),
   uploadGallery:      createUploader('gallery'),
+  uploadService:      createUploader('services')
 };

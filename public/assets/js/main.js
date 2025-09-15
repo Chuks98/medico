@@ -329,6 +329,237 @@
 
 // Home page JavaScript codes
 $(() => {
+  // Fetch Services
+  if(window.location.pathname === '/' || window.location.pathname === '/index') {
+    $.ajax({
+      url: '/services/getAllServices?limit=6&page=1', // fetch just 6
+      method: 'GET',
+      success: function (res) {
+        const services = res.data;
+        const container = $('#servicesContainer');
+        container.empty();
+
+        services.forEach((service, index) => {
+          const delay = (index + 1) * 100;
+
+          // truncate description (e.g., 100 characters max)
+          const shortDesc = service.description.length > 100 
+            ? service.description.substring(0, 100) + "..." 
+            : service.description;
+
+          const card = `
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${delay}">
+              <div class="service-card">
+                <img src="${service.image}" alt="${service.title}" class="img-fluid">
+                <div class="service-content">
+                  <h3>${service.title}</h3>
+                  <p>${shortDesc}</p>
+                  <a href="/service-details?id=${service._id}" class="learn-more">Learn more →</a>
+                </div>
+              </div>
+            </div>
+          `;
+          container.append(card);
+        });
+      },
+      error: function (err) {
+        console.error('Services fetch error:', err);
+        $('#servicesContainer').html('<div class="text-danger text-center">Error loading services.</div>');
+      }
+    });
+
+}
+
+
+
+
+
+  // Fetch all services for the services page
+  if (window.location.pathname === '/service') {
+    $(document).ready(function () {
+      $.ajax({
+        url: '/services/getAllServices', // no ?page or ?limit
+        method: 'GET',
+        success: function (res) {
+          const services = res.data || [];
+          renderServices(services);
+        },
+        error: function (err) {
+          console.error('❌ Services fetch error:', err);
+          $('#services .row').html('<div class="col-12 text-center text-danger">Error loading services.</div>');
+        }
+      });
+
+      function renderServices(services) {
+        const container = $('#services .row');
+        container.empty();
+
+        if (services.length === 0) {
+          container.html(`
+            <div class="col-12">
+              <div class="alert alert-info text-center">No services available yet.</div>
+            </div>
+          `);
+          return;
+        }
+
+        services.forEach((service, index) => {
+          const delay = (index + 1) * 100;
+          
+          // truncate description (e.g., 100 characters max)
+          const shortDesc = service.description.length > 100 
+            ? service.description.substring(0, 100) + "..." 
+            : service.description;
+
+          const card = `
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${delay}">
+              <div class="service-card">
+                <img src="${service.image || 'assets/img/default-service.jpg'}" alt="${service.title}" class="img-fluid">
+                <div class="service-content">
+                  <h3>${service.title}</h3>
+                  <p>${shortDesc || ''}</p>
+                  <a href="/service-details?id=${service._id}" class="learn-more">Learn more →</a>
+                </div>
+              </div>
+            </div>
+          `;
+          container.append(card);
+        });
+      }
+    });
+  }
+
+
+
+
+  if (window.location.pathname === '/service-details') {
+    const params = new URLSearchParams(window.location.search);
+    const serviceId = params.get('id');
+    console.log('Service ID from URL:', serviceId);
+
+    $.ajax({
+      url: `/services/getSingleService/${serviceId}`,
+      method: 'GET',
+      success: function (service) {
+        if (!service) {
+          $('#serviceContentWrapper').html('<div class="alert alert-warning text-center">Service not found.</div>');
+          return;
+        }
+        renderServiceDetails(service);
+      },
+      error: function (err) {
+        console.error('❌ Service fetch error:', err);
+        $('#serviceContentWrapper').html('<div class="text-danger text-center">Error loading service details.</div>');
+      }
+    });
+
+    function renderServiceDetails(service) {
+      const container = $('#serviceContentWrapper');
+      container.empty();
+
+      const content = `
+        <div class="card shadow-lg border-0 animate__animated animate__fadeIn">
+          <!-- Image -->
+          <img src="${service.image || '/assets/img/default-service.jpg'}" 
+              alt="${service.title}" 
+              class="card-img-top img-fluid rounded-top">
+
+          <div class="card-body p-4">
+            <!-- Title -->
+            <h2 class="card-title fw-bold mb-3" style="color:#3fbbc0;">
+              ${service.title}
+            </h2>
+
+            <!-- Description -->
+            <p class="card-text fs-5 text-muted" style="line-height:1.7;">
+              ${service.description}
+            </p>
+
+            <!-- Action Button -->
+            <div class="mt-4">
+              <a href="/service" class="btn btn-lg text-white shadow-sm" 
+                style="background-color:#3fbbc0; border-radius:50px;">
+                <i class="bi bi-arrow-left-circle me-2"></i> Back to Services
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.html(content);
+    }
+  }
+
+
+
+
+
+  // Services list for footer and navbar
+   $.ajax({
+    url: '/services/getAllServices', // fetch all services
+    method: 'GET',
+    success: function (res) {
+
+      const services = res.data || [];
+      renderNavBarServices(services); // ✅ pass full service objects instead of only titles
+      renderFooterServices(services); // ✅ pass full service objects instead of only titles
+    },
+    error: function (err) {
+      console.error('❌ Services fetch error:', err);
+    }
+  });
+
+
+  // Navbar services dropdown
+  function renderNavBarServices(services) {
+    const navbarList = $('#navbarServicesDropdownList'); // <ul id="navbarServicesDropdownList"></ul>
+    navbarList.empty();
+
+    if (services.length === 0) {
+      navbarList.append('<li>No services available yet.</li>');
+      return;
+    }
+
+    services.forEach(service => {
+      navbarList.append(`
+        <li>
+          <a href="/service-details?id=${service._id}">
+            ${service.title}
+          </a>
+        </li>
+      `);
+    });
+  }
+
+  // ✅ Footer rendering (titles + links with ID)
+  function renderFooterServices(services) {
+    const footerList = $('#footerServices'); // <ul id="footerServices"></ul>
+    footerList.empty();
+
+    if (services.length === 0) {
+      footerList.append('<li>No services available yet.</li>');
+      return;
+    }
+
+    services.forEach(service => {
+      footerList.append(`
+        <li>
+          <a href="/service-details?id=${service._id}">
+            ${service.title}
+          </a>
+        </li>
+      `);
+    });
+  }
+
+
+
+
+
+
+
+
+
   // Get all doctors for home page but first check if the element is in the page needed by id.
   if ($('#homeDoctorList').length) {
     fetchDoctorsHome();
@@ -625,7 +856,7 @@ $(() => {
       const date = new Date(blog.createdAt || Date.now()).toLocaleDateString();
       return `
         <div class="news-item" data-aos="fade-up" data-aos-delay="${100 + index * 100}">
-          <div class="news-box border p-3 bg-light rounded shadow-sm h-100">
+          <div class="news-box p-3 h-100">
             <img src="${blog.image || '/assets/img/news/default.jpg'}" alt="News Image">
             <h6 class="mt-4 fw-bold">${blog.title.length > 40 ? blog.title.substring(0, 40) + '...' : blog.title}</h6>
             <small class="text-muted">${date}</small>
@@ -963,55 +1194,55 @@ $(() => {
 
 
   // Services JavaScript codes. Attach click listener to service links
-  const isServicesPage = window.location.pathname === "/services";
-  const displayCount = isServicesPage ? services.length : 6;
+  // const isServicesPage = window.location.pathname === "/services";
+  // // const displayCount = isServicesPage ? services.length : 6;
 
-  const container = $("#services .row");
-  container.empty(); // Clear the static items
+  // const container = $("#services .row");
+  // container.empty(); // Clear the static items
 
-  services.slice(0, displayCount).forEach((service, index) => {
-    const delay = 100 * (index + 1);
-    const card = `
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${delay}">
-        <div class="service-item position-relative">
-          <div class="icon">
-            <i class="${service.icon}"></i>
-          </div>
-          <a href="#" class="stretched-link">
-            <h3>${service.title}</h3>
-          </a>
-          <p>${service.short}</p>
-        </div>
-      </div>
-    `;
-    container.append(card);
-  });
+  // services.slice(0, displayCount).forEach((service, index) => {
+  //   const delay = 100 * (index + 1);
+  //   const card = `
+  //     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${delay}">
+  //       <div class="service-item position-relative">
+  //         <div class="icon">
+  //           <i class="${service.icon}"></i>
+  //         </div>
+  //         <a href="#" class="stretched-link">
+  //           <h3>${service.title}</h3>
+  //         </a>
+  //         <p>${service.short}</p>
+  //       </div>
+  //     </div>
+  //   `;
+  //   container.append(card);
+  // });
 
-  // Optional: Show "See all services" button on homepage
-  if (!isServicesPage) {
-    container.append(`
-      <div class="col-12 text-center mt-5">
-        <a href="/services" class="cta-btn">See More Services</a>
-      </div>
-    `);
-  }
+  // // Optional: Show "See all services" button on homepage
+  // if (!isServicesPage) {
+  //   container.append(`
+  //     <div class="col-12 text-center mt-5">
+  //       <a href="/services" class="cta-btn">See More Services</a>
+  //     </div>
+  //   `);
+  // }
 
 
 
-  $(document).on("click", ".service-item", function (e) {
-    e.preventDefault();
+  // $(document).on("click", ".service-item", function (e) {
+  //   e.preventDefault();
 
-    const clickedTitle = $(this).find("h3").text().trim(); // Corrected to h3
-    const service = services.find(s => s.title === clickedTitle);
+  //   const clickedTitle = $(this).find("h3").text().trim(); // Corrected to h3
+  //   const service = services.find(s => s.title === clickedTitle);
 
-    if (service) {
-      $("#modalTitle").text(service.title);
-      $("#modalContent").text(service.long);
-      $("#modalIcon").attr("class", service.icon + " me-2");
+  //   if (service) {
+  //     $("#modalTitle").text(service.title);
+  //     $("#modalContent").text(service.long);
+  //     $("#modalIcon").attr("class", service.icon + " me-2");
 
-      const modal = new bootstrap.Modal(document.getElementById("serviceModal"));
-      modal.show();
-    }
-  });
+  //     const modal = new bootstrap.Modal(document.getElementById("serviceModal"));
+  //     modal.show();
+  //   }
+  // });
 
 });
