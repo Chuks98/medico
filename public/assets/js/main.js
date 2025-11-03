@@ -1305,7 +1305,7 @@ $(() => {
 
 
 
-   const phoneNumber = "2347043592391";
+   const phoneNumber = "2348033204866";
 
   $("#whatsapp-btn").on("click", function () {
     const message = encodeURIComponent("Hello, I’d like to make an inquiry.");

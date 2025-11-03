@@ -10,40 +10,42 @@ const sendContactEmail = async ({ name, email, subject, message }) => {
   });
 
   const mailOptions = {
-    from: `"Contact Form" <${process.env.MAIL_USER}>`,
+    from: `"Hilton Multispecialist Hospital" <${process.env.MAIL_USER}>`,
     to: process.env.MAIL_RECEIVER,
-    subject: `Contact Inquiry: ${subject}`,
-    text: `
-      New contact message received:
-
-      Name: ${name}
-      Email: ${email}
-      Subject: ${subject}
-      Message: ${message}
-    `,
+    subject: `New Website Inquiry — ${subject}`,
     html: `
-        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f9f9f9; border-radius: 10px; max-width: 600px; margin: auto; border: 1px solid #eee;">
-            <h2 style="color: #333;">📩 New Contact Inquiry</h2>
-            <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                    <td style="padding: 8px; font-weight: bold;">Name:</td>
-                    <td style="padding: 8px;">${name}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; font-weight: bold;">Email:</td>
-                    <td style="padding: 8px;">${email}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; font-weight: bold;">Subject:</td>
-                    <td style="padding: 8px;">${subject}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; font-weight: bold; vertical-align: top;">Message:</td>
-                    <td style="padding: 8px; white-space: pre-line;">${message}</td>
-                </tr>
-            </table>
-            <p style="margin-top: 20px; font-size: 13px; color: #666;">Sent from the contact form on your website.</p>
-        </div>
+      <div style="font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: #f9f9f9; border-radius: 8px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0;">
+        <h2 style="color: #3b34aa; margin-bottom: 15px;">New Contact Message</h2>
+        <p style="color: #333;">You have received a new inquiry through your hospital website:</p>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+          <tr>
+            <td style="padding: 8px; font-weight: bold; color: #555;">Full Name:</td>
+            <td style="padding: 8px;">${name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; font-weight: bold; color: #555;">Email Address:</td>
+            <td style="padding: 8px;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; font-weight: bold; color: #555;">Subject:</td>
+            <td style="padding: 8px;">${subject}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; font-weight: bold; color: #555; vertical-align: top;">Message:</td>
+            <td style="padding: 8px; white-space: pre-line; color: #333;">${message}</td>
+          </tr>
+        </table>
+
+        <p style="margin-top: 20px; font-size: 14px; color: #555;">
+          This message was automatically sent from the contact form on 
+          <strong>Hilton Multispecialist Hospital & Fertility Centre, Awka</strong>.
+        </p>
+
+        <p style="margin-top: 10px; font-size: 12px; color: #999;">
+          Please do not reply directly to this email. Use the contact details provided above.
+        </p>
+      </div>
     `
   };
 

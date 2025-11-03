@@ -35,19 +35,26 @@ async function sendAppointmentApprovedEmailAndWhatsappNotifications({ appointmen
   });
 
   /** =============== PATIENT MESSAGE =============== */
-  const patientSubject = `✅ Your appointment has been rescheduled - ${formattedDate}`;
+  const patientSubject = `💙 Appointment Rescheduled — ${formattedDate}`;
   const patientHtml = `
-    <div style="font-family: Arial, sans-serif; padding: 20px;">
-      <h2 style="color: #007bff;">Hello ${appointment.name},</h2>
-      <p>We wanted to let you know that your appointment has been successfully <strong>rescheduled</strong>.</p>
-      <p><strong>New Appointment Details:</strong></p>
+    <div style="font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; color: #333;">
+      <h2 style="color: #3b34aa;">Dear ${appointment.name},</h2>
+      <p>We’re reaching out from <strong>Hilton Multispecialist Hospital and Fertility Centre, Awka</strong> to let you know that your appointment has been <strong>rescheduled successfully</strong>.</p>
+
+      <p style="margin-top: 10px;"><strong>New Appointment Details:</strong></p>
       <ul>
-        <li>📅 <b>Date:</b> ${formattedDate}</li>
+        <li>📅 <b>Date & Time:</b> ${formattedDate}</li>
         <li>🏥 <b>Department:</b> ${appointment.department}</li>
         <li>👨‍⚕️ <b>Doctor:</b> ${appointment.doctor}</li>
       </ul>
-      <p>If you have any questions, please reply to this email.</p>
-      <p style="margin-top:20px;">💙 Thank you for choosing our hospital!</p>
+
+      <p>If this schedule works for you, no action is required.  
+      If you need to make any changes, kindly reply to this email or contact our help desk.</p>
+
+      <p style="margin-top:20px;">We look forward to seeing you soon.</p>
+      <p style="color:#007bff;"><strong>Hilton Multispecialist Hospital and Fertility Centre</strong><br>Awka, Anambra State</p>
+      <hr style="border:none;border-top:1px solid #ccc;margin:20px 0;">
+      <p style="font-size:13px;color:#888;">This is an automated message. Please do not reply directly.</p>
     </div>
   `;
 
@@ -57,21 +64,34 @@ async function sendAppointmentApprovedEmailAndWhatsappNotifications({ appointmen
     `👨‍⚕️ *Doctor:* ${appointment.doctor}\n\n` +
     `We look forward to seeing you!`;
 
+
+
+
+
+
+
+
+
   /** =============== DOCTOR MESSAGE =============== */
-  const doctorSubject = `📅 New appointment schedule for ${appointment.name}`;
+  const doctorSubject = `📅 Updated Appointment — ${appointment.name}`;
   const doctorHtml = `
-    <div style="font-family: Arial, sans-serif; padding: 20px;">
-      <h2>📢 Appointment Rescheduled</h2>
-      <p>The appointment for <strong>${appointment.name}</strong> has been rescheduled:</p>
+    <div style="font-family: Arial, sans-serif; padding: 20px; color:#333;">
+      <h2 style="color: #3b34aa;">Appointment Rescheduled</h2>
+      <p>The following appointment has been rescheduled:</p>
       <ul>
         <li>👤 <b>Patient:</b> ${appointment.name}</li>
-        <li>📞 <b>Contact:</b> ${appointment.phone}, ${appointment.email}</li>
+        <li>📞 <b>Contact:</b> ${appointment.phone}</li>
+        <li>📧 <b>Email:</b> ${appointment.email}</li>
         <li>📅 <b>New Date:</b> ${formattedDate}</li>
-        <li>📝 <b>Message:</b> ${appointment.message || 'N/A'}</li>
+        ${appointment.message ? `<li>📝 <b>Message:</b> ${appointment.message}</li>` : ''}
       </ul>
-      <p>Please prepare accordingly.</p>
+
+      <p>Please prepare accordingly and confirm with your department if any conflicts arise.</p>
+      <p style="margin-top:20px;color:#007bff;">Hilton Multispecialist Hospital and Fertility Centre, Awka</p>
     </div>
   `;
+
+
 
   const doctorWhatsApp = `📢 *Appointment Rescheduled*\n\n` +
     `👤 Patient: ${appointment.name}\n` +
@@ -79,22 +99,34 @@ async function sendAppointmentApprovedEmailAndWhatsappNotifications({ appointmen
     `📝 Message: ${appointment.message || 'N/A'}\n\n` +
     `Kindly take note.`;
 
+
+
+
+
+
+
+
+
+
+
   /** =============== ADMIN MESSAGE =============== */
-  const adminSubject = `ℹ️ Rescheduled Appointment Summary - ${appointment.name}`;
+  const adminSubject = `ℹ️ Appointment Rescheduled — ${appointment.name}`;
   const adminHtml = `
-    <div style="font-family: Arial, sans-serif; padding: 20px;">
-      <h2>🔄 Appointment Rescheduled</h2>
-      <p>The appointment has been rescheduled with the following details:</p>
+    <div style="font-family: Arial, sans-serif; padding: 20px; color:#333;">
+      <h2 style="color: #3b34aa;">Rescheduled Appointment Notification</h2>
+      <p>The following appointment update was made:</p>
       <ul>
-        <li>👤 Patient: ${appointment.name} (${appointment.phone})</li>
-        <li>🏥 Department: ${appointment.department}</li>
-        <li>👨‍⚕️ Doctor: ${appointment.doctor}</li>
-        <li>📅 New Date: ${formattedDate}</li>
-        <li>📝 Message: ${appointment.message}</li>
+        <li>👤 <b>Patient:</b> ${appointment.name} (${appointment.phone})</li>
+        <li>🏥 <b>Department:</b> ${appointment.department}</li>
+        <li>👨‍⚕️ <b>Doctor:</b> ${appointment.doctor}</li>
+        <li>📅 <b>New Date:</b> ${formattedDate}</li>
+        ${appointment.message ? `<li>📝 <b>Message:</b> ${appointment.message}</li>` : ''}
       </ul>
-      <p>This notification has been sent to the doctor and patient as well.</p>
+      <p>This update has been communicated to both the patient and the assigned doctor.</p>
+      <p style="margin-top:20px;color:#007bff;">Hilton Multispecialist Hospital Admin Panel</p>
     </div>
   `;
+
 
   const adminWhatsApp = `ℹ️ *Appointment Rescheduled*\n\n` +
     `👤 Patient: ${appointment.name}\n` +
