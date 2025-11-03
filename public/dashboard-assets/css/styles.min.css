@@ -15809,6 +15809,22 @@ textarea.form-control-lg {
   transform: rotate(-135deg) translate(0, -50%);
 }
 
+
+/* Sidebar Logo Styling */
+.left-sidebar .brand-logo img {
+  max-width: 100px;      /* Prevents the logo from being too large */
+  height: 100px;          /* Keeps aspect ratio */
+  display: block;
+  object-fit: contain;   /* Ensures no stretching */
+  margin: 0 auto;        /* Centers it nicely */
+}
+
+@media (max-width: 768px) {
+  .left-sidebar .brand-logo img {
+    max-width: 110px;    /* Smaller on mobile */
+  }
+}
+
 .app-topstrip {
   position: fixed;
   top: 0;

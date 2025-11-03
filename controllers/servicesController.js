@@ -87,7 +87,7 @@ exports.getSingleService = async (req, res) => {
 // Update a service
 exports.updateService = async (req, res) => {
   try {
-    const { title, message } = req.body;
+    const { title, description } = req.body;
     const serviceId = req.params.id;
 
     // 🔎 Check if another service (not this one) has the same title
@@ -101,7 +101,7 @@ exports.updateService = async (req, res) => {
     }
 
     // Construct the update object
-    const updateData = { title: title.trim(), message };
+    const updateData = { title: title.trim(), description: description.trim() };
 
     // If a new image was uploaded, include it
     if (req.file) {

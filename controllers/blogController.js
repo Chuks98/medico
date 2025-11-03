@@ -89,7 +89,7 @@ exports.updateBlog = async (req, res) => {
     }
 
     // Construct the update object
-    const updateData = { title: title.trim(), message };
+    const updateData = { title: title.trim(), message: message.trim() };
 
     // If a new image was uploaded, include it
     if (req.file) {

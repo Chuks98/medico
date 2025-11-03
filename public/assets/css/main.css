@@ -12,7 +12,7 @@
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #555555; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #3fbbc0; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --accent-color: #3b34aa; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
@@ -20,11 +20,11 @@
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
   --nav-color: #444444;  /* The default color of the main navmenu links */
-  --nav-hover-color: #3fbbc0; /* Applied to main navmenu links when they are hovered over or active */
+  --nav-hover-color: #3b34aa; /* Applied to main navmenu links when they are hovered over or active */
   --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
   --nav-dropdown-color: #444444; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #3fbbc0; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-dropdown-hover-color: #3b34aa; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -43,10 +43,10 @@
 }
 
 .accent-background {
-  --background-color: #3fbbc0;
+  --background-color: #3b34aa;
   --default-color: #ffffff;
   --heading-color: #ffffff;
-  --surface-color: #65c9cd;
+  --surface-color: #3b34aa;
 }
 
 /* Smooth scroll */
@@ -382,6 +382,15 @@ h6 {
     left: -100%;
     visibility: visible;
   }
+
+  #navmenu a.active {
+    color: #3b34aa !important;
+    font-weight: 600;
+    border-bottom: 2px solid #3b34aa;
+    transition: 0.3s ease;
+  }
+
+
 }
 
 /* Navmenu - Mobile */
@@ -1137,6 +1146,56 @@ section,
   top: calc(50% - 47px);
 }
 
+:root {
+  --primary-color: #3b34aa;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.about-page {
+  background-color: #f8f9fc;
+  color: #333;
+  line-height: 1.7;
+}
+
+.about-article h2, 
+.about-article h4, 
+.about-article h5 {
+  color: var(--primary-color);
+}
+
+.about-article ul {
+  padding-left: 20px;
+}
+
+.about-article ul li {
+  margin-bottom: 8px;
+}
+
+.about-article hr {
+  border: none;
+  border-top: 2px solid #eee;
+}
+
+.sidebar h5 {
+  color: var(--primary-color);
+}
+
+.sidebar ul li {
+  margin-bottom: 8px;
+}
+
+.sidebar ul li a:hover {
+  color: var(--primary-color);
+}
+
+.vision-letters li strong {
+  color: var(--primary-color);
+}
+
+
 /*--------------------------------------------------------------
 # Stats Section
 --------------------------------------------------------------*/
@@ -1181,9 +1240,7 @@ section,
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, #0f5bdf, #40d8d8, #5b92a7, #3eabbe);
-  /* background: linear-gradient(120deg, #1a1f36, #2a3c4f, #3b6978, #204051); */
-  /* background: linear-gradient(120deg, #e0f7fa, #e3f2fd, #ede7f6, #f1f8e9); */
+  background: linear-gradient(120deg, #3b34aa, #5e4ff7, #8a7bff);
   background-size: 400% 400%;
   animation: gradientAnimation 12s ease infinite;
   z-index: -1; /* keep it behind content */
@@ -1420,7 +1477,7 @@ section,
 .service-card .learn-more {
   display: inline-block;
   margin-top: 10px;
-  color: #007bff;
+  color: #3b34aa;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.3s;
@@ -1492,6 +1549,51 @@ section,
   background: color-mix(in srgb, var(--accent-color) 90%, white 15%);
 }
 
+/* Appointment Section Base */
+.appointment {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Default background (desktop) */
+.appointment.section {
+  background: var(--surface-color);
+}
+
+/* 🌈 Mobile gradient background */
+@media (max-width: 768px) {
+  .appointment.section {
+    background: linear-gradient(180deg, #3b34aa 0%, #6258e5 100%);
+    color: #fff;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  /* Optional: make text white */
+  .appointment .section-title h2,
+  .appointment .section-title p {
+    color: #fff !important;
+  }
+
+  /* Add space below image */
+  .appointment .mobile-image {
+    display: block;
+    height: 200px;
+    width: 100%;
+    margin: 0 auto 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Hide image on larger screens */
+@media (min-width: 769px) {
+  .appointment .mobile-image {
+    display: none;
+  }
+}
+
+
 /*--------------------------------------------------------------
 # Tabs Section
 --------------------------------------------------------------*/
@@ -1506,9 +1608,7 @@ section,
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, #0f5bdf, #40d8d8, #5b92a7, #3eabbe);
-  /* background: linear-gradient(120deg, #1a1f36, #2a3c4f, #3b6978, #204051); */
-  /* background: linear-gradient(120deg, #e0f7fa, #e3f2fd, #ede7f6, #f1f8e9); */
+  background: linear-gradient(120deg, #3b34aa, #5e4ff7, #8a7bff);
   background-size: 400% 400%;
   animation: gradientAnimation 12s ease infinite;
   z-index: -1; /* keep it behind content */
@@ -1780,7 +1880,7 @@ section,
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, #0f5bdf, #40d8d8, #5b92a7, #3eabbe);
+  background: linear-gradient(120deg, #3b34aa, #5e4ff7, #8a7bff);
   /* background: linear-gradient(120deg, #1a1f36, #2a3c4f, #3b6978, #204051); */
   /* background: linear-gradient(120deg, #e0f7fa, #e3f2fd, #ede7f6, #f1f8e9); */
   background-size: 400% 400%;
@@ -2424,7 +2524,7 @@ section,
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, #0f5bdf, #40d8d8, #5b92a7, #3eabbe);
+  background: linear-gradient(120deg, #3b34aa, #5e4ff7, #8a7bff);
   /* background: linear-gradient(120deg, #1a1f36, #2a3c4f, #3b6978, #204051); */
   /* background: linear-gradient(120deg, #e0f7fa, #e3f2fd, #ede7f6, #f1f8e9); */
   background-size: 400% 400%;
@@ -2475,12 +2575,12 @@ section,
 .social-links a {
   font-size: 20px;
   margin: 0 12px;
-  color: #0d6efd;
+  color: #3b34aa;
   transition: all 0.3s ease-in-out;
 }
 
 .social-links a:hover {
-  color: #3fbbc0;
+  color: #615bb4;
 }
 
 

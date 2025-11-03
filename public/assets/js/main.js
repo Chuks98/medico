@@ -216,6 +216,19 @@
 
   // Now for the gallery slider
   $(() => {
+
+    function formatDate(dateString) {
+      const formatted = new Date(dateString)
+        .toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'short', // e.g. "May"
+          year: 'numeric'
+        })
+        .replace(/ (\d{4})$/, ', $1'); // adds comma before the year
+      return formatted;
+    }
+
+
     $.getJSON("/images/gallery/getAllGalleryImages", function (images) {
       if (images.length > 0) {
         let slidesHtml = "";
@@ -327,6 +340,52 @@
 
 
 
+
+// For highlighting active header links
+$(document).ready(function () {
+  const currentURL = window.location.href;
+  const currentPath = window.location.pathname;
+  const currentHash = window.location.hash;
+
+  // Remove any existing active state
+  $('#navmenu a').removeClass('active');
+
+  $('#navmenu a').each(function () {
+    const linkHref = $(this).attr('href');
+
+    // Case 1: Exact page match (e.g. /about)
+    if (linkHref === currentPath || linkHref === currentPath + '/') {
+      $(this).addClass('active');
+    }
+
+    // Case 2: Homepage sections (e.g. /#contact, /#gallery)
+    else if (linkHref.includes('#') && currentURL.includes(linkHref)) {
+      $(this).addClass('active');
+    }
+
+    // Case 3: Root path highlight (home)
+    else if (currentPath === '/' && linkHref === '/') {
+      $(this).addClass('active');
+    }
+  });
+
+  // When a user clicks a link
+  $('#navmenu a').on('click', function () {
+    $('#navmenu a').removeClass('active');
+    $(this).addClass('active');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
 // Home page JavaScript codes
 $(() => {
   // Fetch Services
@@ -354,7 +413,11 @@ $(() => {
                 <div class="service-content">
                   <h3>${service.title}</h3>
                   <p>${shortDesc}</p>
-                  <a href="/service-details?id=${service._id}" class="learn-more">Learn more →</a>
+                  <a href="/service-details?id=${service._id}" 
+                    class="btn btn-sm"
+                    style="background-color: #3b34aa; color: #fff; width: 150px; display: inline-block;">
+                    Learn more →
+                  </a>                
                 </div>
               </div>
             </div>
@@ -418,7 +481,7 @@ $(() => {
                 <div class="service-content">
                   <h3>${service.title}</h3>
                   <p>${shortDesc || ''}</p>
-                  <a href="/service-details?id=${service._id}" class="learn-more">Learn more →</a>
+                  <a href="/service-details?id=${service._id}" class="btn btn-sm" style="background-color: #3b34aa; color: #fff; width: 150px">Learn more →</a>
                 </div>
               </div>
             </div>
@@ -460,15 +523,16 @@ $(() => {
       const content = `
         <div class="card shadow-lg border-0 animate__animated animate__fadeIn">
           <!-- Image -->
-          <img src="${service.image || '/assets/img/default-service.jpg'}" 
+          <div style="height: 400px; width: 100%; background-color: #fff; overflow: hidden;">
+            <img 
+              src="${service.image || '/assets/img/default-service.jpg'}" 
               alt="${service.title}" 
-              class="card-img-top img-fluid rounded-top">
+              class="img-fluid rounded-top"
+              style="width: 100%; height: 100%; object-fit: contain; display: block; margin: 0 auto;">
+          </div>
 
           <div class="card-body p-4">
-            <!-- Title -->
-            <h2 class="card-title fw-bold mb-3" style="color:#3fbbc0;">
-              ${service.title}
-            </h2>
+            <h2 class="entry-title mb-3 fw-bold text-dark">${service.title}</h2>
 
             <!-- Description -->
             <p class="card-text fs-5 text-muted" style="line-height:1.7;">
@@ -478,13 +542,14 @@ $(() => {
             <!-- Action Button -->
             <div class="mt-4">
               <a href="/service" class="btn btn-lg text-white shadow-sm" 
-                style="background-color:#3fbbc0; border-radius:50px;">
+                style="background-color:#3b34aa; border-radius:50px;">
                 <i class="bi bi-arrow-left-circle me-2"></i> Back to Services
               </a>
             </div>
           </div>
         </div>
       `;
+
 
       container.html(content);
     }
@@ -501,6 +566,7 @@ $(() => {
     success: function (res) {
 
       const services = res.data || [];
+      renderOtherServices(services);
       renderNavBarServices(services); // ✅ pass full service objects instead of only titles
       renderFooterServices(services); // ✅ pass full service objects instead of only titles
     },
@@ -508,6 +574,41 @@ $(() => {
       console.error('❌ Services fetch error:', err);
     }
   });
+
+
+  // ✅ Function to render Other Services
+  function renderOtherServices(services) {
+    const container = $('.other-services');
+    container.empty();
+
+    if (services.length === 0) {
+      container.html('<div class="text-muted">No other services available yet.</div>');
+      return;
+    }
+
+    services.forEach((service) => {
+      const serviceItem = `
+        <div class="d-flex align-items-center mb-3" style="cursor: pointer;" onclick="window.location.href='/service-details?id=${service._id}'">
+          <img src="${service.image || 'assets/img/default-service.jpg'}" 
+               alt="${service.title}" 
+               class="me-3 rounded" 
+               width="60" 
+               height="60" 
+               style="object-fit: cover;">
+          <div>
+            <h6 class="mb-1">
+              <a href="/service-details?id=${service._id}" 
+                 class="text-decoration-none text-dark">
+                ${service.title.length > 35 ? service.title.substring(0, 35) + '...' : service.title}
+              </a>
+            </h6>
+          </div>
+        </div>
+      `;
+
+      container.append(serviceItem);
+    });
+  }
 
 
   // Navbar services dropdown
@@ -852,16 +953,27 @@ $(() => {
       return;
     }
 
+    function formatDate(dateString) {
+      const formatted = new Date(dateString)
+        .toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'short', // e.g. "May"
+          year: 'numeric'
+        })
+        .replace(/ (\d{4})$/, ', $1'); // adds comma before the year
+      return formatted;
+    }
+
     newsContainer.innerHTML = blogs.map((blog, index) => {
       const date = new Date(blog.createdAt || Date.now()).toLocaleDateString();
       return `
         <div class="news-item" data-aos="fade-up" data-aos-delay="${100 + index * 100}">
           <div class="news-box p-3 h-100">
             <img src="${blog.image || '/assets/img/news/default.jpg'}" alt="News Image">
-            <h6 class="mt-4 fw-bold">${blog.title.length > 40 ? blog.title.substring(0, 40) + '...' : blog.title}</h6>
-            <small class="text-muted">${date}</small>
+            <h6 class="mt-4 fw-bold text-white">${blog.title.length > 40 ? blog.title.substring(0, 40) + '...' : blog.title}</h6>
+            <small class="text-white">${formatDate(date)}</small>
             <p class="mt-2">${blog.message.substring(0, 50)}...</p>
-            <a href="/blog-details?id=${blog._id}" class="btn btn-sm btn-primary mt-2" data-id="${blog._id}">Read More</a>
+            <a href="/blog-details?id=${blog._id}" style="background-color: #3b34aa; color: #fff;" class="btn btn-sm mt-2" data-id="${blog._id}">Read More</a>
           </div>
         </div>
       `;
@@ -944,7 +1056,7 @@ $(() => {
                 <div id="comment-${i}" class="comment mb-4 p-3 border rounded shadow-sm bg-white">
                   <div class="d-flex align-items-start gap-3">
                     <div class="comment-img">
-                      <img src="/assets/img/testimonials/testimonials-1.jpg" alt="User" class="rounded-circle" width="50" height="50">
+                      <img src="/assets/img/user-1.jpg" alt="User" class="rounded-circle" width="50" height="50">
                     </div>
                     <div class="flex-grow-1">
                       <div class="d-flex justify-content-between align-items-center mb-1">
@@ -952,7 +1064,6 @@ $(() => {
                         <small class="text-muted"><i class="bi bi-clock me-1"></i>${date}</small>
                       </div>
                       <p class="text-muted mb-2" style="font-size: 0.95rem;">${c.comment}</p>
-                      <a href="#" class="reply text-primary small"><i class="bi bi-reply-fill me-1"></i>Reply</a>
                     </div>
                   </div>
                 </div>
@@ -977,7 +1088,8 @@ $(() => {
                   </ul>
                 </div>
 
-                <div class="entry-content text-dark" style="line-height: 1.7; font-size: 1rem;">
+                <div class="entry-content text-dark" 
+                    style="line-height: 1.7; font-size: 15px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%;">
                   <p>${blog.message}</p>
                 </div>
               </article>
@@ -1077,6 +1189,54 @@ $(() => {
         }
       });
     });
+
+    // The sidebar for blog details page. It is supposed to be below but I am using it here to avoid duplication
+    function renderLatestNews(blogs) {
+      const container = $('.latest-news');
+      container.empty();
+
+      if (blogs.length === 0) {
+        container.html('<div class="text-muted">No other blog posts available yet.</div>');
+        return;
+      }
+
+      blogs.forEach((blog) => {
+        const blogItem = `
+          <div class="d-flex align-items-center mb-3" style="cursor: pointer;" onclick="window.location.href='/blog-details?id=${blog._id}'">
+            <img src="${blog.image || 'assets/img/default-blog.jpg'}" 
+                alt="${blog.title}" 
+                class="me-3 rounded" 
+                width="60" 
+                height="60" 
+                style="object-fit: cover;">
+            <div>
+              <h6 class="mb-1">
+                <a href="/blog-details?id=${blog._id}" 
+                  class="text-decoration-none text-dark">
+                  ${blog.title.length > 35 ? blog.title.substring(0, 35) + '...' : blog.title}
+                </a>
+              </h6>
+            </div>
+          </div>
+        `;
+
+        container.append(blogItem);
+      });
+    }
+
+    // AJAX load blogs
+    $.ajax({
+      url: '/blog/latestNews',
+      method: 'GET',
+      success: function (blogs) {
+        renderLatestNews(blogs);
+      },
+      error: function (err) {
+        console.error('News fetch error:', err);
+        $('#newsContainer').html('<div class="text-danger text-center">Error loading news.</div>');
+      }
+    });
+
   }
 
 
